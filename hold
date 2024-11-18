@@ -1,0 +1,21 @@
+services:
+  gitlab:
+    image: gitlab/gitlab-ce
+    container_name: gitlab
+    restart: always
+    hostname: 'docker-gitlab'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        # Add any other gitlab.rb configuration here, each on its own line
+        #external_url 'http://192.168.1.229'
+        gitlab_rails['gitlab_shell_ssh_port'] = 2424
+        gitlab_rails['initial_root_password'] = '${initial_root_password}'
+    ports:
+      - '80:80'
+      - '443:443'
+      - '2424:22'
+    volumes:
+      - '/home/jeo/gitlab/config:/etc/gitlab'
+      - '/home/jeo/gitlab/logs:/var/log/gitlab'
+      - '/home/jeo/gitlab/data:/var/opt/gitlab'
+    shm_size: '256m'
